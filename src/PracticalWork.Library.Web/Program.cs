@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace PracticalWork.Library.Web;
 
@@ -40,7 +41,7 @@ public class Program
 
         var app = builder.Build();
         startup.Configure(app, app.Environment, app.Lifetime, app.Logger, app.Services);
-
+        
         await app.RunAsync();
     }
 

@@ -1,21 +1,34 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
-namespace PracticalWork.Library.Cache.Redis;
-
-public static class Entry
+namespace PracticalWork.Library.Cache.Redis
 {
-    /// <summary>
-    /// Регистрация зависимостей для распределенного Cache
-    /// </summary>
-    public static IServiceCollection AddCache(this IServiceCollection serviceCollection, IConfiguration configuration)
+    public static class Entry
     {
-        var connectionString = configuration["App:Redis:RedisCacheConnection"];
-        var prefix = configuration["App:Redis:RedisCachePrefix"];
+        /// <summary>
+        /// Регистрация зависимостей для распределенного Redis Cache
+        /// </summary>
+        public static IServiceCollection AddCache(this IServiceCollection services, IConfiguration configuration)
+        {
+            var connectionString = configuration["App:Redis:RedisCacheConnection"];
+            var prefix = configuration["App:Redis:RedisCachePrefix"] ?? "app_cache:";
 
-        // Реализация подключения к Redis и сервисов
+            // Регистрируем подключение к Redis (Singleton)
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                return ConnectionMultiplexer.Connect(connectionString);
+            });
 
-        return serviceCollection;
+            // Настраиваем IDistributedCache через Redis
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = connectionString;
+                options.InstanceName = prefix; // Префикс для всех ключей
+            });
+
+            return services;
+        }
     }
 }
-

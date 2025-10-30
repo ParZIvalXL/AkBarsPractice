@@ -1,5 +1,6 @@
 ﻿using PracticalWork.Library.Abstractions.Storage;
 using PracticalWork.Library.Enums;
+using PracticalWork.Library.Models;
 
 namespace PracticalWork.Library.Data.PostgreSql.Entities;
 

@@ -24,6 +24,8 @@ public static class Entry
     private static void AddValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssemblyContaining<CreateBookRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateBookRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<AddBookDetailsRequestValidator>();
         services.AddFluentValidationAutoValidation();
 
         ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member?.Name;

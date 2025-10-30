@@ -51,10 +51,12 @@ public class Startup
             c.UseOneOfForPolymorphism();
             c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PracticalWork.Library.Contracts.xml"));
             c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PracticalWork.Library.Controllers.xml"));
+            
         });
 
         services.AddDomain();
         services.AddCache(Configuration);
+        services.AddSingleton<CacheService>();
         services.AddMinioFileStorage(Configuration);
     }
 

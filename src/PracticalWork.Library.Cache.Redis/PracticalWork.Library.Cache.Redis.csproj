@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PracticalWork.Library\PracticalWork.Library.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="StackExchange.Redis" />
   </ItemGroup>
 
 </Project>
