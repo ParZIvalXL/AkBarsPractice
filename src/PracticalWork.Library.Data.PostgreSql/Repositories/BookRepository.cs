@@ -68,6 +68,9 @@ public sealed class BookRepository : IBookRepository
             throw new ArgumentException($"Книга с ID {id} не найдена", nameof(id));
         
         Book book = entity.ToBook();
+        if(book.IsArchived)
+            throw new BookServiceException("Книга уже архивирована");
+        
         book.Archive();
         
         _appDbContext.Update(entity);

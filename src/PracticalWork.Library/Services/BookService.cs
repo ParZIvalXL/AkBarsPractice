@@ -43,6 +43,11 @@ public sealed class BookService : IBookService
     {
         try
         {
+            if (book is null)
+                throw new BookServiceException("Книга не найдена!");
+            
+            if(book.IsArchived)
+                throw new BookServiceException("Книга архивирована!");
             await _bookRepository.UpdateBook(id, book);
             
             await _cache.RemoveByPrefixAsync("books:list:");
@@ -81,6 +86,9 @@ public sealed class BookService : IBookService
         
         if (book == null)
             throw new BookServiceException("Книга не найдена!");
+        
+        if(book.IsArchived)
+            throw new BookServiceException("Книга архивирована!");
         
         await _objectStorage.UploadFileAsync(book.Title, new MemoryStream(file));
     }
