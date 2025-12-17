@@ -11,35 +11,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ffa907fb-51b9-48d2-a81b-97b9350a00d8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/CacheKeys.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Contracts/v1/Books/Response/GetBooksResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.Minio/IObjectStorage.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.Minio/ObjectStorage.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Services/CacheExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Services/CacheService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PracticalWork.Library/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PracticalWork.Library/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Directory.Packages.props" beforeDir="false" afterPath="$PROJECT_DIR$/Directory.Packages.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PracticalWork.Library.sln" beforeDir="false" afterPath="$PROJECT_DIR$/PracticalWork.Library.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/Entry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/Entry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/PracticalWork.Library.Cache.Redis.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/PracticalWork.Library.Cache.Redis.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Contracts/v1/Books/Request/UpdateBookRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Contracts/v1/Books/Request/UpdateBookRequest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Api/v1/BooksController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Api/v1/BooksController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Entry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Entry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Mappers/v1/BooksExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Mappers/v1/BooksExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.Minio/Entry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.Minio/Entry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.Minio/PracticalWork.Library.Data.Minio.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.Minio/PracticalWork.Library.Data.Minio.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Entities/AbstractBookEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Entities/AbstractBookEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Entities/EducationalBookEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Entities/EducationalBookEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Entities/FictionBookEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Entities/FictionBookEntity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/BookRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/BookRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.Development.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Services/IBookService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Services/IBookService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IBookRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IBookRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/PracticalWork.Library.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/PracticalWork.Library.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Services/BookService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Services/BookService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/PracticalWork.Library.Data.PostgreSql.Migrator/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/utils/PracticalWork.Library.Data.PostgreSql.Migrator/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +40,10 @@
     &quot;accountId&quot;: &quot;93dc0cde-53cd-445c-86e1-73027b586603&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/JetBrains/Shared/vAny/SourcesCache/1419ed4112a5f67e99e1dec32aef5592bcdecca3da27dba832c32e1b0ca14/ServiceCollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -185,12 +168,20 @@
       <workItem from="1761726762539" duration="2313000" />
       <workItem from="1761729445071" duration="4253000" />
       <workItem from="1761816397127" duration="547000" />
+      <workItem from="1761841376791" duration="4015000" />
+      <workItem from="1762535679302" duration="1526000" />
+      <workItem from="1763031050145" duration="1679000" />
+      <workItem from="1763203522015" duration="1993000" />
+      <workItem from="1764804689742" duration="2114000" />
+      <workItem from="1765193737892" duration="3000" />
+      <workItem from="1765886200548" duration="617000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />

@@ -26,10 +26,11 @@ public sealed class BookService : IBookService
         book.Status = BookStatus.Available;
         try
         {
+            // TODO: глобальный обработчик ошибок
             var id = await _bookRepository.CreateBook(book);
 
-            await _cache.RemoveByPrefixAsync("books:list:");
-            await _cache.RemoveByPrefixAsync("library:books:");
+            //await _cache.RemoveByPrefixAsync("books:list:");
+            //await _cache.RemoveByPrefixAsync("library:books:");
 
             return id;
         }
@@ -41,55 +42,61 @@ public sealed class BookService : IBookService
 
     public async Task UpdateBook(Guid id, Book book)
     {
-        try
-        {
-            if (book is null)
-                throw new BookServiceException("Книга не найдена!");
-            
-            if(book.IsArchived)
-                throw new BookServiceException("Книга архивирована!");
-            await _bookRepository.UpdateBook(id, book);
-            
-            await _cache.RemoveByPrefixAsync("books:list:");
-            await _cache.RemoveAsync(CacheKeys.BookDetails(id));
-        }
-        catch (Exception ex)
-        {
-            throw new BookServiceException("Ошибка обновления книги!", ex);
-        }
+        await _bookRepository.UpdateBook(id, book);
+        
+        await _cache.RemoveByPrefixAsync("books:list:");
+        await _cache.RemoveAsync(CacheKeys.BookDetails(id));
     }
 
     public async Task ArchiveBook(Guid id)
     {
-        try
-        {
-            await _bookRepository.ArchiveBook(id);
-            await _cache.RemoveByPrefixAsync("books:list:");
-            await _cache.RemoveByPrefixAsync("library:books:");
-        }
-        catch (Exception ex)
-        {
-            throw new BookServiceException("Ошибка архивации книги!", ex);
-        }
+        var book = await _bookRepository.GetBookById(id);
+        book.Archive();
+        await _bookRepository.UpdateBook(id, book);
+        
+        await _cache.RemoveByPrefixAsync("books:list:");
+        await _cache.RemoveByPrefixAsync("library:books:");
     }
-
-    public async Task<List<Book>> GetBooks()
+    
+    public async Task<List<Book>> GetBooks(int booksPerPage, int page)
     {
-        var books = await _bookRepository.GetBooks();
+        var books = await _bookRepository.GetBooks(booksPerPage, page);
 
         return books;
     }
 
-    public async Task AddDetails(Guid id, byte[] file)
+    public async Task AddDetails(Guid id, string description, byte[] file)
     {
         Book book = await _bookRepository.GetBookById(id);
-        
-        if (book == null)
-            throw new BookServiceException("Книга не найдена!");
-        
+    
         if(book.IsArchived)
             throw new BookServiceException("Книга архивирована!");
-        
-        await _objectStorage.UploadFileAsync(book.Title, new MemoryStream(file));
+
+        string extension = GetFileExtension(file);
+        string fileName = $"books/{book.Title}/cover{extension}";
+    
+        using var stream = new MemoryStream(file);
+        await _objectStorage.UploadFileAsync(fileName, stream);
+    
+        book.Description = description;
+        book.CoverImagePath = fileName;
+    
+        await _bookRepository.UpdateBook(id, book);
+    }
+
+    private string GetFileExtension(byte[] file)
+    {
+        if (file.Length < 2) return ".jpg";
+    
+        if (file[0] == 0xFF && file[1] == 0xD8) return ".jpg";
+        if (file.Length >= 3 && file[0] == 0x47 && file[1] == 0x49 && file[2] == 0x46) return ".gif";
+        if (file.Length >= 4)
+        {
+            if (file[0] == 0x89 && file[1] == 0x50 && file[2] == 0x4E && file[3] == 0x47) return ".png";
+            if (file[0] == 0x42 && file[1] == 0x4D) return ".bmp";
+            if (file[0] == 0x52 && file[1] == 0x49 && file[2] == 0x46 && file[3] == 0x46) return ".webp";
+        }
+    
+        return ".jpg";
     }
 }

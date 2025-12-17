@@ -42,6 +42,7 @@ public sealed class BookRepository : IBookRepository
     public Task UpdateBook(Guid id, Book book)
     {
         AbstractBookEntity entity = _appDbContext.Books.FirstOrDefault(f => f.Id == id);
+        
         if (entity == null)
             throw new ArgumentException($"Книга с ID {id} не найдена", nameof(id));
         
@@ -55,26 +56,13 @@ public sealed class BookRepository : IBookRepository
         return _appDbContext.SaveChangesAsync();
     }
 
-    public async Task<List<Book>> GetBooks()
+    public async Task<List<Book>> GetBooks(int booksPerPage, int page)
     {
-        return await _appDbContext.Books.Select(s => s.ToBook()).ToListAsync();
-    }
-
-    public async Task ArchiveBook(Guid id)
-    {
-        AbstractBookEntity entity = _appDbContext.Books
-            .Include(abstractBookEntity => abstractBookEntity.IssuanceRecords).FirstOrDefault(f => f.Id == id);
-        if (entity == null)
-            throw new ArgumentException($"Книга с ID {id} не найдена", nameof(id));
-        
-        Book book = entity.ToBook();
-        if(book.IsArchived)
-            throw new BookServiceException("Книга уже архивирована");
-        
-        book.Archive();
-        
-        _appDbContext.Update(entity);
-        await _appDbContext.SaveChangesAsync();
+        return await _appDbContext.Books
+            .Skip((page - 1) * booksPerPage)
+            .Take(booksPerPage)
+            .Select(s => s.ToBook())
+            .ToListAsync();
     }
     
     private static BookCategory GetBookCategory(AbstractBookEntity entity)
@@ -91,6 +79,7 @@ public sealed class BookRepository : IBookRepository
     public Task<Book> GetBookById(Guid id)
     {
         AbstractBookEntity entity = _appDbContext.Books.FirstOrDefault(f => f.Id == id);
+        
         if (entity == null)
             throw new ArgumentException($"Книга с ID {id} не найдена", nameof(id));
         

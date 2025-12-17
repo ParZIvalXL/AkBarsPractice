@@ -21,7 +21,9 @@ public class BooksController : Controller
         _bookService = bookService;
     }
 
-    /// <summary> Создание новой книги</summary>
+    /// <summary>
+    /// Создание новой книги
+    /// </summary>
     [HttpPost]
     [Produces("application/json")]
     [ProducesResponseType(typeof(CreateBookResponse), 200)]
@@ -61,7 +63,7 @@ public class BooksController : Controller
     [ProducesResponseType(500)]
     public async Task<IActionResult> GetBooks()
     {
-        var result = await _bookService.GetBooks();
+        var result = await _bookService.GetBooks(10, 1);
         // TODO: Redis
         return new JsonResult(result);
     }
@@ -85,6 +87,7 @@ public class BooksController : Controller
     /// </summary>
     /// <param name="id">Книга</param>
     /// <param name="photo">Обложка</param>
+    /// <param name="request">Детали книги</param>
     /// <returns></returns>
     [HttpPost("/{id}/details")]
     [ProducesResponseType(200)]
@@ -92,16 +95,25 @@ public class BooksController : Controller
     [ProducesResponseType(500)]
     public async Task<IActionResult> AddDetails(
         [FromRoute] Guid id,
+        AddBookDetailsRequest request,
         IFormFile photo)
     {
         if (photo == null || photo.Length == 0)
-            return BadRequest("File is required");
-
+            return BadRequest("Файл обязателен");
+        
+        if(photo.Length > 5 * 1024)
+            return BadRequest("Файл должен весить не больше 5 МБ");
+            
         await using (var memoryStream = new MemoryStream())
         {
             await photo.CopyToAsync(memoryStream);
             var file = memoryStream.ToArray();
-            await _bookService.AddDetails(id, file);
+            
+            await _bookService.AddDetails(id, request.Description, file);
+            // бакет исчез
+            // TODO: путь к обложке
+            
+            
         }
 
         return Ok();
