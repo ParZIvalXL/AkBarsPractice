@@ -1,4 +1,6 @@
-﻿using PracticalWork.Library.Models;
+﻿using JetBrains.Annotations;
+using PracticalWork.Library.Enums;
+using PracticalWork.Library.Models;
 
 namespace PracticalWork.Library.Abstractions.Storage;
 
@@ -24,8 +26,16 @@ public interface IBookRepository
     /// </summary>
     /// <param name="booksPerPage">Количество книг в одной странице</param>
     /// <param name="page">Номер страницы</param>
+    /// <param name="category">Категория книги</param>
+    /// <param name="author">Автор книги</param>
+    /// <param name="status">Статус книги</param>
     /// <returns>Список книг</returns>
-    Task<List<Book>> GetBooks(int booksPerPage, int page);
+    Task<List<Book>> GetBooks(
+        int? booksPerPage,
+        int? page,
+        BookCategory? category = null,
+        [CanBeNull] string author = null,
+        BookStatus? status = null);
     
     /// <summary>
     /// Получить книгу по идентификатору

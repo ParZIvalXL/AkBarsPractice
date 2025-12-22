@@ -10,5 +10,9 @@ public sealed class AddBookDetailsRequestValidator : AbstractValidator<AddBookDe
         RuleFor(x => x.Description)
             .MaximumLength(2000).WithMessage("Описание не может превышать 2000 символов.")
             .When(x => !string.IsNullOrEmpty(x.Description));
+        
+        RuleFor(x => x.Photo)
+            .NotNull().WithMessage("Фото не может быть пустым.")
+            .When(x => x.Photo != null);
     }
 }

@@ -15,7 +15,7 @@ public sealed class ReaderEntity : EntityBase
     public string PhoneNumber { get; set; }
 
     /// <summary>Дата окончания действия карточки</summary>
-    public DateOnly ExpiryDate { get; set; }
+    public DateTime ExpiryDate { get; set; }
 
     /// <summary>Активность карточки</summary>
     public bool IsActive { get; set; }

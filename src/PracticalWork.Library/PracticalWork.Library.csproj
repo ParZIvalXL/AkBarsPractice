@@ -11,7 +11,6 @@
     <PackageReference Include="StackExchange.Redis" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PracticalWork.Library.Cache.Redis\PracticalWork.Library.Cache.Redis.csproj" />
     <ProjectReference Include="..\PracticalWork.Library.Data.Minio\PracticalWork.Library.Data.Minio.csproj" />
   </ItemGroup>
 </Project>

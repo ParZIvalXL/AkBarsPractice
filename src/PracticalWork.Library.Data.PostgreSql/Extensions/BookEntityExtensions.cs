@@ -4,7 +4,7 @@ using PracticalWork.Library.Data.PostgreSql.Entities;
 using PracticalWork.Library.Enums;
 using PracticalWork.Library.Models;
 
-namespace PracticalWork.Library.Data.PostgreSql.Extenssions
+namespace PracticalWork.Library.Data.PostgreSql.Extensions
 {
     public static class BookEntityExtensions
     {

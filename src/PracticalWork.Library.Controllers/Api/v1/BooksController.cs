@@ -1,11 +1,11 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using PracticalWork.Library.Abstractions.Services;
 using PracticalWork.Library.Contracts.v1.Books.Request;
 using PracticalWork.Library.Contracts.v1.Books.Response;
 using PracticalWork.Library.Controllers.Mappers.v1;
+using PracticalWork.Library.Enums;
 
 namespace PracticalWork.Library.Controllers.Api.v1;
 
@@ -49,7 +49,6 @@ public class BooksController : Controller
     public async Task<IActionResult> UpdateOrder([FromRoute] Guid id, UpdateBookRequest request)
     {
         await _bookService.UpdateBook(id, request.ToBook());
-        // TODO: Redis
         return Ok();
     }
 
@@ -61,10 +60,14 @@ public class BooksController : Controller
     [Produces("application/json")]
     [ProducesResponseType(typeof(GetBooksResponse), 200)]
     [ProducesResponseType(500)]
-    public async Task<IActionResult> GetBooks()
+    public async Task<IActionResult> GetBooks(BookStatus? status, BookCategory? category, [CanBeNull] string author, int? page, int? pageSize)
     {
-        var result = await _bookService.GetBooks(10, 1);
-        // TODO: Redis
+        if (page < 1 )
+            throw new ArgumentException("Страница указана неверно");
+        if (pageSize < 1 || pageSize > 100)
+            throw new  ArgumentException("Книг в странице не может быть меньше 1 или больше 100");
+        
+        var result = await _bookService.GetBooks(pageSize, page, category, author, status);
         return new JsonResult(result);
     }
 
@@ -85,35 +88,31 @@ public class BooksController : Controller
     /// <summary>
     /// Добавление деталей книге
     /// </summary>
-    /// <param name="id">Книга</param>
-    /// <param name="photo">Обложка</param>
-    /// <param name="request">Детали книги</param>
     /// <returns></returns>
     [HttpPost("/{id}/details")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public async Task<IActionResult> AddDetails(
-        [FromRoute] Guid id,
-        AddBookDetailsRequest request,
-        IFormFile photo)
+    public async Task<IActionResult> AddDetails([FromForm] AddBookDetailsRequest request, [FromRoute] Guid id)
     {
-        if (photo == null || photo.Length == 0)
+        if (request.Photo == null || request.Photo.Length == 0)
             return BadRequest("Файл обязателен");
         
-        if(photo.Length > 5 * 1024)
+        var allowedExtensions = new[] { ".jpeg", ".png", ".webp" };
+        var fileExtension = Path.GetExtension(request.Photo.FileName).ToLowerInvariant();
+    
+        if (!allowedExtensions.Contains(fileExtension))
+            return BadRequest($"Недопустимый формат файла. Разрешенные форматы: {string.Join(", ", allowedExtensions)}");
+        
+        if(request.Photo.Length > 5 * 1024 * 1024)
             return BadRequest("Файл должен весить не больше 5 МБ");
-            
+        
         await using (var memoryStream = new MemoryStream())
         {
-            await photo.CopyToAsync(memoryStream);
+            await request.Photo.CopyToAsync(memoryStream);
             var file = memoryStream.ToArray();
             
             await _bookService.AddDetails(id, request.Description, file);
-            // бакет исчез
-            // TODO: путь к обложке
-            
-            
         }
 
         return Ok();

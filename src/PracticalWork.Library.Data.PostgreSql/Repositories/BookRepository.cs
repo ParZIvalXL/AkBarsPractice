@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using PracticalWork.Library.Abstractions.Storage;
 using PracticalWork.Library.Data.PostgreSql.Entities;
-using PracticalWork.Library.Data.PostgreSql.Extenssions;
+using PracticalWork.Library.Data.PostgreSql.Extensions;
 using PracticalWork.Library.Enums;
-using PracticalWork.Library.Exceptions;
 using PracticalWork.Library.Models;
 
 namespace PracticalWork.Library.Data.PostgreSql.Repositories;
@@ -51,19 +51,64 @@ public sealed class BookRepository : IBookRepository
         entity.Year = book.Year;
         entity.Authors = book.Authors;
         entity.Status = book.Status;
+        entity.CoverImagePath = book.CoverImagePath;
 
         _appDbContext.Update(entity);
         return _appDbContext.SaveChangesAsync();
     }
 
-    public async Task<List<Book>> GetBooks(int booksPerPage, int page)
+    public async Task<List<Book>> GetBooks(
+            int? booksPerPage,
+            int? page,
+            BookCategory? category,
+            string author = null,
+            BookStatus? status = null)
     {
-        return await _appDbContext.Books
-            .Skip((page - 1) * booksPerPage)
-            .Take(booksPerPage)
-            .Select(s => s.ToBook())
+        page ??= 1;
+        booksPerPage ??= 20;
+        
+        var query = _appDbContext.Books
+            .Include(b => b.IssuanceRecords)
+            .AsQueryable();
+                
+        if (status.HasValue)
+        {
+            query = query.Where(b => b.Status == status.Value);
+        }
+                
+        if (!string.IsNullOrWhiteSpace(author))
+        {
+            var authorLower = author.Trim().ToLower();
+            query = query.Where(b => b.Authors.Any(a => a.ToLower().Contains(authorLower)));
+        }
+                
+        if (category is not null)
+        {
+            query = FilterByCategory(query, category);
+        }
+            
+        var result = await query
+            .OrderByDescending(b => b.CreatedAt)
+            .Skip(((int)page - 1) * (int)booksPerPage)
+            .Take((int)booksPerPage)
+            .Select(b => b.ToBook())
             .ToListAsync();
+                    
+        return result;
     }
+
+        private IQueryable<AbstractBookEntity> FilterByCategory(
+            IQueryable<AbstractBookEntity> query, 
+            BookCategory? category)
+        {
+            return category switch
+            {
+                BookCategory.ScientificBook => query.OfType<ScientificBookEntity>(),
+                BookCategory.EducationalBook => query.OfType<EducationalBookEntity>(),
+                BookCategory.FictionBook => query.OfType<FictionBookEntity>(),
+                _ => query.OfType<AbstractBookEntity>()
+            };
+        }
     
     private static BookCategory GetBookCategory(AbstractBookEntity entity)
     {

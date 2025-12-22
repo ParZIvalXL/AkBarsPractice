@@ -10,4 +10,8 @@
     <PackageReference Include="StackExchange.Redis" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PracticalWork.Library\PracticalWork.Library.csproj" />
+  </ItemGroup>
+
 </Project>

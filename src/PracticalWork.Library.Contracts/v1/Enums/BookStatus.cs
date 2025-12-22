@@ -1,4 +1,4 @@
-﻿namespace PracticalWork.Library.Contracts.v1.Enums;
+namespace PracticalWork.Library.Contracts.v1.Enums;
 
 /// <summary>
 /// Статус книги в библиотеке

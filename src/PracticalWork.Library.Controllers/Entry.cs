@@ -21,11 +21,18 @@ public static class Entry
         return builder;
     }
 
+    /// <summary>
+    /// Добавление валидации
+    /// </summary>
+    /// <param name="services">Сервисы</param>
     private static void AddValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssemblyContaining<CreateBookRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateBookRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<AddBookDetailsRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateReaderRequestValidator>();
+        
+        
         services.AddFluentValidationAutoValidation();
 
         ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member?.Name;

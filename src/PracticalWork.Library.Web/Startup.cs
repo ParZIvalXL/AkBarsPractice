@@ -8,6 +8,10 @@ using PracticalWork.Library.Data.PostgreSql;
 using PracticalWork.Library.Exceptions;
 using PracticalWork.Library.Web.Configuration;
 using System.Text.Json.Serialization;
+using PracticalWork.Library.Abstractions.Services;
+using PracticalWork.Library.Abstractions.Storage;
+using PracticalWork.Library.Application.Interfaces;
+using PracticalWork.Library.Web.Middleware;
 
 namespace PracticalWork.Library.Web;
 
@@ -34,6 +38,10 @@ public class Startup
             cfg.UseNpgsql(npgsqlDataSource);
         });
 
+        services.AddRedisCache(Configuration);
+        services.AddMinioFileStorage(Configuration);
+        services.AddDomain();
+
         services.AddMvc(opt =>
             {
                 opt.Filters.Add<DomainExceptionFilter<AppException>>();
@@ -49,15 +57,19 @@ public class Startup
         services.AddSwaggerGen(c =>
         {
             c.UseOneOfForPolymorphism();
+            c.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
             c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PracticalWork.Library.Contracts.xml"));
             c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PracticalWork.Library.Controllers.xml"));
-            
         });
 
-        services.AddDomain();
-        services.AddCache(Configuration);
-        services.AddSingleton<CacheService>();
-        services.AddMinioFileStorage(Configuration);
+        RegisterApplicationServices(services);
+    }
+    
+    private void RegisterApplicationServices(IServiceCollection services)
+    {
+        services.AddScoped<ICacheService, RedisCacheService>();
+        services.AddSingleton<ICacheKeyGenerator, CacheKeyGenerator>();
+        
     }
 
     [UsedImplicitly]
@@ -67,6 +79,8 @@ public class Startup
         app.UsePathBase(new PathString(_basePath));
 
         app.UseRouting();
+        
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseEndpoints(endpoints =>
         {
