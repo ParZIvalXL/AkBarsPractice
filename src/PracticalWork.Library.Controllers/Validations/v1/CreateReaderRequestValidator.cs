@@ -19,7 +19,7 @@ public class CreateReaderRequestValidator : AbstractValidator<CreateReaderReques
         RuleFor(x => x.ExpiryDate)
             .NotEmpty()
             .WithMessage("Дата истечения срока действия не может быть пустой")
-            .LessThanOrEqualTo(DateTime.UtcNow)
+            .GreaterThanOrEqualTo(DateTime.UtcNow)
             .WithMessage("Дата истечения срока действия должна быть в будущем");
         
         RuleFor(x => x.PhoneNumber)

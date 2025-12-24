@@ -11,34 +11,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ffa907fb-51b9-48d2-a81b-97b9350a00d8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/CacheService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Configuration/RedisConfigurationExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Middleware/ExeptionHoldingMiddleware.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Services/CacheKeyGenerator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/ICacheKeyGenerator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/ICacheService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PracticalWork.Library/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PracticalWork.Library/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/CacheKeys.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/CacheKeys.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/CacheTTL.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/PracticalWork.Library.Cache.Redis.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Cache.Redis/PracticalWork.Library.Cache.Redis.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Contracts/v1/Enums/BookStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Contracts/v1/Enums/BookStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Api/v1/BooksController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Api/v1/BooksController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/PracticalWork.Library.Data.PostgreSql.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/PracticalWork.Library.Data.PostgreSql.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/BookRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/BookRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Web/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Services/IBookService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Services/IBookService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IBookRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IBookRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/PracticalWork.Library.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/PracticalWork.Library.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Services/BookService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Services/BookService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Services/CacheExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Services/CacheService.cs" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Contracts/v1/Readers/Request/ExtendReaderCardRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Validations/v1/ExtendReaderCardExpiryValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Api/v1/ReadersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Api/v1/ReadersController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Entry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Entry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Validations/v1/CreateReaderRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Validations/v1/CreateReaderRequestValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/BorrowRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/BorrowRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/ReaderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/ReaderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IBorrowRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IBorrowRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IReaderRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IReaderRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticalWork.Library/Services/ReaderService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticalWork.Library/Services/ReaderService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,12 +46,25 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/JetBrains/Shared/vAny/DecompilerCache/decompiler/b8cec6fb23bc404a9c30585d81c749a2291438/82/c9f72845/DbContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/JetBrains/Shared/vAny/SourcesCache/1419ed4112a5f67e99e1dec32aef5592bcdecca3da27dba832c32e1b0ca14/ServiceCollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/JetBrains/Shared/vAny/SourcesCache/3c13bcf2472e33fbd9b71675dd1d838142686d7a4f62aafb458d93deb4794/AbstractValidator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Contracts/v1/Abstracts/AbstractReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Api/v1/ReadersController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Validations/v1/CreateReaderRequestValidator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Controllers/Validations/v1/ExtendReaderCardExpiryValidator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/BorrowRepository.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Data.PostgreSql/Repositories/ReaderRepository.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Web/Configuration/RedisConfigurationExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library.Web/Middleware/ExeptionHoldingMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Services/CacheKeyGenerator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Services/IReaderService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IBorrowRepository.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/ICacheKeyGenerator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/ICacheService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Abstractions/Storage/IReaderRepository.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Models/Reader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/PracticalWork.Library/Services/ReaderService.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -72,25 +75,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.PracticalWork.Library.Web: http.executor": "Run",
-    ".NET Project.PracticalWork.Library.Data.PostgreSql.Migrator.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.PracticalWork.Library.Web: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.PracticalWork.Library.Data.PostgreSql.Migrator.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.PracticalWork.Library.Web: http">
     <configuration name="PracticalWork.Library.Data.PostgreSql.Migrator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -200,6 +203,7 @@
       <workItem from="1766069947140" duration="3299000" />
       <workItem from="1766404829946" duration="1007000" />
       <workItem from="1766406946057" duration="1343000" />
+      <workItem from="1766408802273" duration="25114000" />
     </task>
     <servers />
   </component>

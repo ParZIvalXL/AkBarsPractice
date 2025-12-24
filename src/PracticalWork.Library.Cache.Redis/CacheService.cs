@@ -85,7 +85,6 @@ namespace PracticalWork.Library.Cache.Redis
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при сохранении данных в кэш по ключу {Key}", key);
-                // Не бросаем исключение, чтобы не ломать основной поток
             }
         }
 
@@ -212,11 +211,8 @@ namespace PracticalWork.Library.Cache.Redis
                 var db = _redisConnection.GetDatabase();
                 var result = await db.StringIncrementAsync(fullKey, value);
                 
-                // Устанавливаем TTL если указан
                 if (expiration.HasValue)
-                {
                     await db.KeyExpireAsync(fullKey, expiration.Value);
-                }
                 
                 return result;
             }

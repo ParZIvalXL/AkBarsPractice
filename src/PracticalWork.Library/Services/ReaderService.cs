@@ -26,24 +26,45 @@ public class ReaderService : IReaderService
 
     public async Task ExtendCard(Guid id, DateOnly newExpiryDate)
     {
-        var reader = await _readerRepository.GetReaderById(id);
+        var reader = _readerRepository.GetReaderById(id);
         
         if(reader == null)
             throw new ArgumentException("Не существует карточки с таким ID");
         
-        reader.ExpiryDate = new DateTime(newExpiryDate.Year, newExpiryDate.Month, newExpiryDate.Day);
+        if(!reader.IsActive)
+            throw new ArgumentException("Карточка неактивна");
+        
+        var newExpiryUtc = newExpiryDate.ToDateTime(TimeOnly.MinValue).ToUniversalTime();
+        
+        if(reader.ExpiryDate > newExpiryUtc)
+            throw new ArgumentException("Новая дата истечения срока действия не может быть меньше текущей");
+        
+        reader.ExpiryDate = newExpiryUtc;
         
         await _readerRepository.UpdateReader(id, reader);
     }
 
-    public Task CloseCard(Guid id)
+    public async Task CloseCard(Guid id)
     {
-        throw new NotImplementedException();
+        var entity = _readerRepository.GetReaderById(id);
+        
+        if(entity == null)
+            throw new ArgumentException("Не существует карточки с таким ID");
+        
+        if(!entity.IsActive)
+            throw new ArgumentException("Карточка неактивна");
+        
+        if(_borrowRepository.IsReaderHasBorrowedBooks(id))
+            throw new ArgumentException("Читатель имеет книги");
+        
+        entity.IsActive = false;
+        
+        await _readerRepository.UpdateReader(id, entity);
     }
 
     public async Task<List<Guid>> GetReaderBooksIds(Guid id)
     {
-        Reader reader = await _readerRepository.GetReaderById(id);
+        Reader reader = _readerRepository.GetReaderById(id);
         
         if(reader == null)
             throw new ArgumentException("Не существует карточки с таким ID");

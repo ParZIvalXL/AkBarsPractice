@@ -30,7 +30,9 @@ public static class Entry
         services.AddValidatorsFromAssemblyContaining<CreateBookRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateBookRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<AddBookDetailsRequestValidator>();
+        
         services.AddValidatorsFromAssemblyContaining<CreateReaderRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<ExtendReaderCardExpiryValidator>();
         
         
         services.AddFluentValidationAutoValidation();

@@ -23,7 +23,7 @@ public interface IReaderRepository
     /// </summary>
     /// <param name="id">ID карточки</param>
     /// <returns>Данные карточки</returns>
-    Task<Reader> GetReaderById(Guid id);
+    Reader GetReaderById(Guid id);
     
     /// <summary>
     /// Получить список карточек читателей

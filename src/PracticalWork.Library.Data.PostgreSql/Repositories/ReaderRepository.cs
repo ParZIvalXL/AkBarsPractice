@@ -44,7 +44,7 @@ public class ReaderRepository : IReaderRepository
         
         entity.FullName = reader.FullName;
         entity.PhoneNumber = reader.PhoneNumber;
-        entity.ExpiryDate = reader.ExpiryDate;
+        entity.ExpiryDate = reader.ExpiryDate.ToUniversalTime();
         entity.IsActive = reader.IsActive;
         entity.UpdatedAt = reader.UpdatedAt;
         
@@ -52,9 +52,22 @@ public class ReaderRepository : IReaderRepository
         await _appDbContext.SaveChangesAsync();
     }
 
-    public Task<Reader> GetReaderById(Guid id)
+    public Reader GetReaderById(Guid id)
     {
-        throw new NotImplementedException();
+        ReaderEntity entity = _appDbContext.Readers.FirstOrDefault(r => r.Id == id);
+        
+        if(entity == null)
+            throw new ArgumentException("Не существует карточки с таким ID");
+        
+        return new Reader()
+        {
+            FullName = entity.FullName,
+            PhoneNumber = entity.PhoneNumber,
+            ExpiryDate = entity.ExpiryDate,
+            IsActive = entity.IsActive,
+            CreatedAt = entity.CreatedAt,
+            UpdatedAt = entity.UpdatedAt
+        };
     }
 
     public Task<List<Reader>> GetReaders(int? readersPerPage, int? page, string name = null)

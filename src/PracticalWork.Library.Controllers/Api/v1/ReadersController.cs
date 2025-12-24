@@ -41,9 +41,20 @@ public class ReadersController : ControllerBase
     [ProducesResponseType( 200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public async Task<IActionResult> ExtendCard(Guid id, DateOnly newExpiryDate)
+    public async Task<IActionResult> ExtendCard([FromRoute] Guid id, ExtendReaderCardRequest request)
     {
-        await _readerService.ExtendCard(id, newExpiryDate);
+        await _readerService.ExtendCard(id, request.NewExpiryDate);
+
+        return Ok();
+    }
+    
+    [HttpPost("/{id}/close")]
+    [ProducesResponseType( 200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    public async Task<IActionResult> CloseCard([FromRoute] Guid id)
+    {
+        await _readerService.CloseCard(id);
 
         return Ok();
     }
