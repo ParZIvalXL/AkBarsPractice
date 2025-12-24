@@ -19,5 +19,19 @@ public interface IBorrowRepository
     /// <returns>
     /// Есть ли у читателя книги
     /// </returns>
-    bool IsReaderHasBorrowedBooks(Guid readerId);
+    Task<bool> IsReaderHasBorrowedBooks(Guid readerId);
+    
+    /// <summary>
+    /// Создать запись о передаче книги читателю
+    /// </summary>
+    /// <param name="readerId">ID карточки читателя</param>
+    /// <param name="bookId">ID книги</param>
+    Task<Guid> BorrowBook(Guid readerId, Guid bookId);
+    
+    /// <summary>
+    /// Изменить статус взятия книги на возврат
+    /// </summary>
+    /// <param name="bookId">Книга</param>
+    /// <returns></returns>
+    Task ReturnBook(Guid bookId);
 }

@@ -38,13 +38,13 @@ public interface IReaderService
     /// </summary>
     /// <param name="id">ID карточки читателя</param>
     /// <returns>Список книг</returns>
-    Task<List<Book>> GetReaderBooks(Guid id);
+    Task<Book[]> GetReaderBooks(Guid id);
     
     /// <summary>
     /// Проверка номера в базе
     /// </summary>
     /// <param name="number">Номер читателя</param>
     /// <returns>Существует ли номер в базе</returns>
-    bool IsNumberExistsInDatabase(string number);
+    Task<bool> IsNumberExistsInDatabase(string number);
 
 }

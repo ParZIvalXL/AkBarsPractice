@@ -42,7 +42,7 @@ public class BooksController : Controller
     /// </summary>
     /// <param name="id">Идентификатор книги</param>
     /// <param name="request">Новые данные книги</param>
-    [HttpPut("/{id}")]
+    [HttpPut("{id}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -75,7 +75,7 @@ public class BooksController : Controller
     /// Архивировать книгу
     /// </summary>
     /// <param name="id">Идентификатор книги</param>
-    [HttpPost("/{id}/archive")]
+    [HttpPost("{id}/archive")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -89,7 +89,7 @@ public class BooksController : Controller
     /// Добавление деталей книге
     /// </summary>
     /// <returns></returns>
-    [HttpPost("/{id}/details")]
+    [HttpPost("{id}/details")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]

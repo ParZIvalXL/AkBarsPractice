@@ -29,15 +29,11 @@ public class ReadersController : ControllerBase
     {
         var reader = request.ToReader();
         
-        if(_readerService.IsNumberExistsInDatabase(reader.PhoneNumber))
-            return BadRequest("Такой номер телефона уже существует");
-        
         var id = await _readerService.CreateReader(reader);
-
         return Ok(id);
     }
     
-    [HttpPost("/{id}/extend")]
+    [HttpPost("{id}/extend")]
     [ProducesResponseType( 200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -48,7 +44,7 @@ public class ReadersController : ControllerBase
         return Ok();
     }
     
-    [HttpPost("/{id}/close")]
+    [HttpPost("{id}/close")]
     [ProducesResponseType( 200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -57,5 +53,14 @@ public class ReadersController : ControllerBase
         await _readerService.CloseCard(id);
 
         return Ok();
+    }
+    
+    [HttpGet("{id}/Books")]
+    [ProducesResponseType( 200)]
+    [ProducesResponseType(500)]
+    public async Task<IActionResult> GetBooks([FromRoute] Guid id)
+    {
+        var reader = await _readerService.GetReaderBooks(id);
+        return Ok(reader);
     }
 }

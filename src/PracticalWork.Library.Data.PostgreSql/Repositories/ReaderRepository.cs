@@ -52,9 +52,9 @@ public class ReaderRepository : IReaderRepository
         await _appDbContext.SaveChangesAsync();
     }
 
-    public Reader GetReaderById(Guid id)
+    public async Task<Reader> GetReaderById(Guid id)
     {
-        ReaderEntity entity = _appDbContext.Readers.FirstOrDefault(r => r.Id == id);
+        ReaderEntity entity = await _appDbContext.Readers.FirstOrDefaultAsync(r => r.Id == id);
         
         if(entity == null)
             throw new ArgumentException("Не существует карточки с таким ID");
@@ -75,8 +75,8 @@ public class ReaderRepository : IReaderRepository
         throw new NotImplementedException();
     }
 
-    public bool IsPhoneNumberExistsInDatabase(string phoneNumber)
+    public async Task<bool> IsPhoneNumberExistsInDatabase(string phoneNumber)
     {
-        return _appDbContext.Readers.Any(r => r.PhoneNumber == phoneNumber);
+        return await _appDbContext.Readers.AnyAsync(r => r.PhoneNumber == phoneNumber);
     }
 }

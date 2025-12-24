@@ -20,7 +20,7 @@ public interface IBookRepository
     /// <param name="book">Новые данные</param>
     /// <returns></returns>
     Task UpdateBook(Guid id, Book book);
-    
+
     /// <summary>
     /// Получить список книг
     /// </summary>
@@ -29,13 +29,15 @@ public interface IBookRepository
     /// <param name="category">Категория книги</param>
     /// <param name="author">Автор книги</param>
     /// <param name="status">Статус книги</param>
+    /// <param name="archivedFilter">Фильтр по архиву</param>
     /// <returns>Список книг</returns>
     Task<List<Book>> GetBooks(
         int? booksPerPage,
         int? page,
         BookCategory? category = null,
         [CanBeNull] string author = null,
-        BookStatus? status = null);
+        BookStatus? status = null,
+        bool archivedFilter = false);
     
     /// <summary>
     /// Получить книгу по идентификатору
@@ -43,4 +45,24 @@ public interface IBookRepository
     /// <param name="id">Идентификатор книги</param>
     /// <returns>Книга</returns>
     Task<Book> GetBookById(Guid id);
+
+    /// <summary>
+    /// Получить подробные детали о книге по ее ID
+    /// </summary>
+    /// <param name="id">ID книги</param>
+    /// <returns>Детали книги</returns>
+    Task<BookDetails> GetBookDetails(Guid id);
+    
+    /// <summary>
+    /// Получить id книги по ее названию
+    /// </summary>
+    /// <param name="title">Название книги</param>
+    /// <returns>Id книги</returns>
+    Task<Guid> GetBookIdByTitle(string title);
+
+    /// <summary>
+    /// Проверяет существует ли книга с таким названием
+    /// </summary>
+    /// <param name="title">Название книги</param>
+    Task<bool> BookTitleExists(string title);
 }

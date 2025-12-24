@@ -23,21 +23,12 @@ public interface IReaderRepository
     /// </summary>
     /// <param name="id">ID карточки</param>
     /// <returns>Данные карточки</returns>
-    Reader GetReaderById(Guid id);
-    
-    /// <summary>
-    /// Получить список карточек читателей
-    /// </summary>
-    /// <param name="readersPerPage">Количество карточек на странице</param>
-    /// <param name="page">Страница</param>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    Task<List<Reader>> GetReaders(int? readersPerPage, int? page, string name = null);
+    Task<Reader> GetReaderById(Guid id);
     
     /// <summary>
     /// Проверка номера в базе данных
     /// </summary>
     /// <param name="phoneNumber">Номер телефона</param>
     /// <returns>Есть ли указанный номер в базе</returns>
-    bool IsPhoneNumberExistsInDatabase(string phoneNumber);
+    Task<bool> IsPhoneNumberExistsInDatabase(string phoneNumber);
 }

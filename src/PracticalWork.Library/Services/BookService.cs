@@ -40,7 +40,6 @@ public sealed class BookService : IBookService
         var id = await _bookRepository.CreateBook(book);
             
         await InvalidateBooksListCache();
-        await InvalidateLibraryBooksCache();
 
         return id;
     }
@@ -59,7 +58,6 @@ public sealed class BookService : IBookService
         
         await InvalidateBooksListCache();
         await _cache.RemoveAsync(_cacheKeyGenerator.GenerateBookDetailsKey(id));
-        await InvalidateLibraryBooksCache();
     }
 
     public async Task ArchiveBook(Guid id)
@@ -73,7 +71,6 @@ public sealed class BookService : IBookService
         await _bookRepository.UpdateBook(id, book);
         
         await InvalidateBooksListCache();
-        await InvalidateLibraryBooksCache();
         await _cache.RemoveAsync(_cacheKeyGenerator.GenerateBookDetailsKey(id));
     }
 
@@ -82,7 +79,8 @@ public sealed class BookService : IBookService
         int? page = 1,
         BookCategory? category = null,
         [CanBeNull] string author = null,
-        BookStatus? status = null)
+        BookStatus? status = null,
+        bool archivedFilter = false)
     {
         if(page != null && booksPerPage != null)
             ValidateGetBooksParameters(booksPerPage, page);
@@ -92,18 +90,35 @@ public sealed class BookService : IBookService
         
         return await _cache.GetOrSetAsync(cacheKey, async () =>
         {
-            return await _bookRepository.GetBooks(booksPerPage, page, category, author, status);
+            return await _bookRepository.GetBooks(booksPerPage, page, category, author, status, archivedFilter);
         }, TimeSpan.FromMinutes(10));
     }
 
-    /// <summary>
-    /// Получение детальной информации о книге с кэшированием
-    /// </summary>
-    public async Task<Book> GetBookDetails(Guid id)
+    public async Task<bool> BookTitleExists(string title)
     {
+        return await _bookRepository.BookTitleExists(title);
+    }
+
+    public async Task<BookDetails> GetBookDetails(Guid id)
+    {
+        
         var cacheKey = _cacheKeyGenerator.GenerateBookDetailsKey(id);
         
-        return await _cache.GetOrSetAsync(cacheKey, async () => await _bookRepository.GetBookById(id), TimeSpan.FromMinutes(30));
+        return await _cache.GetOrSetAsync(cacheKey, async () => await _bookRepository.GetBookDetails(id), TimeSpan.FromMinutes(30));
+    }
+
+    public async Task<BookDetails> GetBookDetails(string idOrTitle)
+    {
+        Guid id;
+        if (await BookTitleExists(idOrTitle))
+            id = await _bookRepository.GetBookIdByTitle(idOrTitle);
+
+        else if (!Guid.TryParse(idOrTitle, out id))
+            throw new ArgumentException("Не существует книги с таким названием или ID");
+        
+        var cacheKey = _cacheKeyGenerator.GenerateBookDetailsKey(id);
+        
+        return await _cache.GetOrSetAsync(cacheKey, async () => await _bookRepository.GetBookDetails(id), TimeSpan.FromMinutes(30));
     }
     
     /// <summary>
@@ -137,7 +152,11 @@ public sealed class BookService : IBookService
         
         await _cache.RemoveAsync(_cacheKeyGenerator.GenerateBookDetailsKey(id));
         await InvalidateBooksListCache();
-        await InvalidateLibraryBooksCache();
+    }
+
+    public async Task<Book> GetBookById(Guid id)
+    {
+        return await _bookRepository.GetBookById(id);
     }
 
     private void ValidateGetBooksParameters(int? booksPerPage, int? page)
@@ -200,13 +219,5 @@ public sealed class BookService : IBookService
     private async Task InvalidateBooksListCache()
     {
         await _cache.RemoveByPrefixAsync(_cacheKeyGenerator.BooksListPrefix);
-    }
-
-    /// <summary>
-    /// Инвалидация кеша списка книг
-    /// </summary>
-    private async Task InvalidateLibraryBooksCache()
-    {
-        await _cache.RemoveByPrefixAsync(_cacheKeyGenerator.LibraryBooksPrefix);
     }
 }

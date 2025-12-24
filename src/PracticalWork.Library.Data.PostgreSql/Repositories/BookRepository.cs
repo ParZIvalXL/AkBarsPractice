@@ -62,7 +62,8 @@ public sealed class BookRepository : IBookRepository
             int? page,
             BookCategory? category,
             string author = null,
-            BookStatus? status = null)
+            BookStatus? status = null,
+            bool archivedFilter = false)
     {
         page ??= 1;
         booksPerPage ??= 20;
@@ -74,6 +75,11 @@ public sealed class BookRepository : IBookRepository
         if (status.HasValue)
         {
             query = query.Where(b => b.Status == status.Value);
+        }
+        
+        if (archivedFilter)
+        {
+            query = query.Where(b => b.Status != BookStatus.Archived);
         }
                 
         if (!string.IsNullOrWhiteSpace(author))
@@ -129,5 +135,32 @@ public sealed class BookRepository : IBookRepository
             throw new ArgumentException($"Книга с ID {id} не найдена", nameof(id));
         
         return Task.FromResult(entity.ToBook());
-    }  
+    }
+
+    public Task<BookDetails> GetBookDetails(Guid id)
+    {
+        AbstractBookEntity entity = _appDbContext.Books.FirstOrDefault(f => f.Id == id);
+        
+        if (entity == null)
+            throw new ArgumentException($"Книга с ID {id} не найдена", nameof(id));
+        
+        return Task.FromResult(entity.ToBookDetails());
+    }
+
+    public async Task<Guid> GetBookIdByTitle(string title)
+    {
+        var book = await _appDbContext.Books
+            .AsNoTracking() // Добавляем для оптимизации, если не нужно отслеживание
+            .FirstOrDefaultAsync(f => f.Title == title);
+    
+        if (book == null)
+            throw new ArgumentException($"Книга с названием {title} не найдена", nameof(title));
+    
+        return book.Id;
+    }
+
+    public Task<bool> BookTitleExists(string title)
+    {
+        return _appDbContext.Books.AnyAsync(x => x.Title == title);
+    }
 }

@@ -24,6 +24,17 @@ namespace PracticalWork.Library.Data.PostgreSql.Extensions
                 IsArchived = entity.Status == BookStatus.Archived
             };
         }
+        
+        public static BookDetails ToBookDetails(this AbstractBookEntity entity)
+        {
+            if (entity == null) return null;
+
+            return new BookDetails()
+            {
+                Description = entity.Description,
+                CoverImagePath = entity.CoverImagePath,
+            };
+        }
 
         public static AbstractBookEntity ToEntity(this Book book)
         {
