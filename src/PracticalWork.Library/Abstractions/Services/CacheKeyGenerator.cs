@@ -162,13 +162,10 @@ namespace PracticalWork.Library.Abstractions.Services
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 return "empty";
             
-            // Удаляем все нецифровые символы, кроме плюса в начале
             var normalized = System.Text.RegularExpressions.Regex.Replace(
                 phoneNumber, 
                 @"[^\d+]", 
                 "");
-            
-            // Если начинается с +7 или 8, приводим к формату 7XXXXXXXXXX
             if (normalized.StartsWith("+7"))
                 normalized = "7" + normalized.Substring(2);
             else if (normalized.StartsWith("8") && normalized.Length > 1)

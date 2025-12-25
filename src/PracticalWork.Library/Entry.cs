@@ -15,6 +15,7 @@ public static class Entry
         services.AddScoped<IReaderService, ReaderService>();
         services.AddScoped<ILibraryService, LibraryService>();
 
+        
         return services;
     }
 }

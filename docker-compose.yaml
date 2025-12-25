@@ -1,20 +1,79 @@
+version: '3.8'
+
 services:
   # PostgreSQL database
-  # Заполнить 
+  postgres:
+    image: postgres:15-alpine
+    container_name: library-postgres
+    environment:
+      POSTGRES_DB: library
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: P@ssWord
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
 
   # Redis cache
-  # Заполнить 
+  redis:
+    image: redis:7-alpine
+    container_name: library-redis
+    command: redis-server --requirepass p@ssw0rd
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
 
   # MinIO file storage
-  # Заполнить 
+  minio:
+    image: minio/minio:latest
+    container_name: library-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
 
   # pgAdmin for database management
-  # Заполнить 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: library-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@library.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: unless-stopped
+    depends_on:
+      - postgres
 
   # Redis Commander for Redis management
-  # Заполнить 
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: library-redis-commander
+    environment:
+      REDIS_HOSTS: local:redis:6379
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: p@ssw0rd
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      - redis
 
 volumes:
- postgres_data:
- redis_data:
- minio_data:
+  postgres_data:
+  redis_data:
+  minio_data:
+  pgadmin_data:

@@ -29,13 +29,10 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddPostgreSqlStorage(cfg =>
+        services.AddPostgreSqlStorage(options =>
         {
-            var npgsqlDataSource = new NpgsqlDataSourceBuilder(Configuration["App:DbConnectionString"])
-                .EnableDynamicJson()
-                .Build();
-
-            cfg.UseNpgsql(npgsqlDataSource);
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            options.UseNpgsql(connectionString);
         });
 
         services.AddRedisCache(Configuration);
