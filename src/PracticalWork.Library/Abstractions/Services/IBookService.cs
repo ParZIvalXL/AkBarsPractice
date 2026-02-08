@@ -37,15 +37,16 @@ public interface IBookService
     /// <param name="ArchivedFilter">Фильтр по архиву</param>
     /// <returns>Список книг</returns>
     Task<List<Book>> GetBooks(int? booksPerPage = 20, int? page = 1, BookCategory? category = null, [CanBeNull] string author = null, BookStatus? status = null, bool ArchivedFilter = false);
-    
+
     /// <summary>
     /// Добавление деталей книге
     /// </summary>
     /// <param name="id">ID книги</param>
     /// <param name="description">Описание</param>
     /// <param name="file">Изображение обложки</param>
+    /// <param name="extension">Тип изображения</param>
     /// <returns></returns>
-    Task AddDetails(Guid id, string description,byte[] file);
+    Task AddDetails(Guid id, string description,byte[] file, string extension);
 
     /// <summary>
     /// Получить книгу по ID
@@ -66,7 +67,7 @@ public interface IBookService
     /// <param name="id">ID книги</param>
     /// <returns>Детали</returns>
     Task<BookDetails> GetBookDetails(Guid id);
-    
+
     /// <summary>
     /// Получить детали книги по ее названию
     /// </summary>

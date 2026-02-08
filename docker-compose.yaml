@@ -1,7 +1,9 @@
 version: '3.8'
 
 services:
-  # PostgreSQL database
+  # =========================
+  # Library PostgreSQL
+  # =========================
   postgres:
     image: postgres:15-alpine
     container_name: library-postgres
@@ -15,8 +17,30 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
+    networks:
+      - library-net
 
-  # Redis cache
+  # =========================
+  # Reports PostgreSQL
+  # =========================
+  reports-postgres:
+    image: postgres:15-alpine
+    container_name: reports-postgres
+    environment:
+      POSTGRES_DB: reports
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: P@ssWord
+    ports:
+      - "5433:5432"
+    volumes:
+      - reports_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - library-net
+
+  # =========================
+  # Redis
+  # =========================
   redis:
     image: redis:7-alpine
     container_name: library-redis
@@ -26,8 +50,12 @@ services:
     volumes:
       - redis_data:/data
     restart: unless-stopped
+    networks:
+      - library-net
 
-  # MinIO file storage
+  # =========================
+  # MinIO
+  # =========================
   minio:
     image: minio/minio:latest
     container_name: library-minio
@@ -41,8 +69,28 @@ services:
     volumes:
       - minio_data:/data
     restart: unless-stopped
+    networks:
+      - library-net
 
-  # pgAdmin for database management
+  # =========================
+  # RabbitMQ
+  # =========================
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: library-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: unless-stopped
+    networks:
+      - library-net
+
+  # =========================
+  # pgAdmin
+  # =========================
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: library-pgadmin
@@ -53,27 +101,43 @@ services:
       - "5050:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-    restart: unless-stopped
     depends_on:
       - postgres
+      - reports-postgres
+    restart: unless-stopped
+    networks:
+      - library-net
 
-  # Redis Commander for Redis management
+  # =========================
+  # Redis Commander
+  # =========================
   redis-commander:
     image: rediscommander/redis-commander:latest
     container_name: library-redis-commander
     environment:
-      REDIS_HOSTS: local:redis:6379
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: p@ssw0rd
+      REDIS_HOSTS: local:redis:6379:0:p@ssw0rd
     ports:
       - "8081:8081"
-    restart: unless-stopped
     depends_on:
       - redis
+    restart: unless-stopped
+    networks:
+      - library-net
 
+
+# =========================
+# Volumes
+# =========================
 volumes:
   postgres_data:
+  reports_postgres_data:
   redis_data:
   minio_data:
   pgadmin_data:
+
+# =========================
+# Network
+# =========================
+networks:
+  library-net:
+    driver: bridge

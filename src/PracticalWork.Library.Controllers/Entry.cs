@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using PracticalWork.Library.Controllers.Validations.v1;
 using System.Globalization;
+using PracticalWork.Library.Controllers.Validations.v2;
 
 namespace PracticalWork.Library.Controllers;
 
@@ -33,6 +34,8 @@ public static class Entry
         
         services.AddValidatorsFromAssemblyContaining<CreateReaderRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<ExtendReaderCardExpiryValidator>();
+        
+        services.AddValidatorsFromAssemblyContaining<GetActivityLogsRequestValidator>();
         
         
         services.AddFluentValidationAutoValidation();

@@ -10,7 +10,7 @@ using PracticalWork.Library.Enums;
 namespace PracticalWork.Library.Controllers.Api.v1;
 
 [ApiController]
-[ApiVersion("1")]
+[ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/books")]
 public class BooksController : Controller
 {
@@ -112,10 +112,9 @@ public class BooksController : Controller
             await request.Photo.CopyToAsync(memoryStream);
             var file = memoryStream.ToArray();
             
-            await _bookService.AddDetails(id, request.Description, file);
+            await _bookService.AddDetails(id, request.Description, file, Path.GetExtension(request.Photo.FileName));
         }
 
         return Ok();
-
     }
 }

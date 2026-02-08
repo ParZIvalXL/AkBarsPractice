@@ -7,7 +7,7 @@ using PracticalWork.Library.Contracts.v1.Library.Request;
 namespace PracticalWork.Library.Controllers.Api.v1;
 
 [ApiController]
-[ApiVersion("1")]
+[ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/library")]
 public class LibraryController : ControllerBase
 {

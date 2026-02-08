@@ -1,4 +1,5 @@
 ﻿using PracticalWork.Library.Enums;
+using BookCategory = PracticalWork.Library.Contracts.v1.Enums.BookCategory;
 
 namespace PracticalWork.Library.Models;
 
@@ -20,7 +21,7 @@ public sealed class Book
     public int Year { get; set; }
 
     /// <summary>Категория</summary>
-    public BookCategory Category { get; set; }
+    public Enums.BookCategory Category { get; set; }
 
     /// <summary>Статус</summary>
     public BookStatus Status { get; set; }

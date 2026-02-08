@@ -117,8 +117,8 @@ namespace PracticalWork.Library.Data.PostgreSql.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<DateOnly>("ExpiryDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FullName")
                         .IsRequired()

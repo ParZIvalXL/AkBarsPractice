@@ -3,10 +3,14 @@ using Microsoft.Extensions.Logging;
 using PracticalWork.Library.Abstractions.Services;
 using PracticalWork.Library.Abstractions.Storage;
 using PracticalWork.Library.Application.Interfaces;
+using PracticalWork.Library.Contracts.v2.Abstracts;
+using PracticalWork.Library.Contracts.v2.Messaging;
+using PracticalWork.Library.Contracts.v2.Readers.Events;
 using PracticalWork.Library.Data.Minio;
 using PracticalWork.Library.Enums;
 using PracticalWork.Library.Exceptions;
 using PracticalWork.Library.Models;
+using PracticalWork.Reports.Domain.Enums;
 
 namespace PracticalWork.Library.Services;
 
@@ -17,20 +21,24 @@ public sealed class BookService : IBookService
     private readonly ICacheService _cache;
     private readonly ICacheKeyGenerator _cacheKeyGenerator;
     private readonly ILogger<BookService> _logger;
+    private readonly IMessagePublisher _messagePublisher;
 
     public BookService(
-        IBookRepository bookRepository, 
-        IObjectStorage objectStorage, 
+        IBookRepository bookRepository,
+        IObjectStorage objectStorage,
         ICacheService cacheService,
         ICacheKeyGenerator cacheKeyGenerator,
+        IMessagePublisher messagePublisher,
         ILogger<BookService> logger)
     {
         _bookRepository = bookRepository;
         _objectStorage = objectStorage;
         _cache = cacheService;
         _cacheKeyGenerator = cacheKeyGenerator;
+        _messagePublisher = messagePublisher;
         _logger = logger;
     }
+
 
     public async Task<Guid> CreateBook(Book book)
     {
@@ -38,8 +46,16 @@ public sealed class BookService : IBookService
         book.Status = BookStatus.Available;
         
         var id = await _bookRepository.CreateBook(book);
-            
-        await InvalidateBooksListCache();
+
+        var evt = new BookCreatedEvent(
+            id,
+            book.Title,
+            book.Category.ToString(),
+            book.Authors.ToArray(),
+            book.Year,
+            DateTime.UtcNow);
+
+        await _messagePublisher.PublishAsync(evt);
 
         return id;
     }
@@ -51,13 +67,16 @@ public sealed class BookService : IBookService
         if (existingBook.IsArchived)
             throw new BookServiceException("Нельзя редактировать архивированную книгу");
         
-        if (existingBook.Category != book.Category)
-            throw new BookServiceException("Категорию книги нельзя изменить");
-        
         await _bookRepository.UpdateBook(id, book);
         
         await InvalidateBooksListCache();
         await _cache.RemoveAsync(_cacheKeyGenerator.GenerateBookDetailsKey(id));
+        
+        await _bookRepository.UpdateBook(id, book);
+
+        await InvalidateBooksListCache();
+        await _cache.RemoveAsync(_cacheKeyGenerator.GenerateBookDetailsKey(id));
+
     }
 
     public async Task ArchiveBook(Guid id)
@@ -69,7 +88,15 @@ public sealed class BookService : IBookService
         
         book.Archive();
         await _bookRepository.UpdateBook(id, book);
-        
+
+        var evt = new BookArchivedEvent(
+            id,
+            book.Title,
+            "Unknown",
+            DateTime.UtcNow);
+
+        await _messagePublisher.PublishAsync(evt);
+
         await InvalidateBooksListCache();
         await _cache.RemoveAsync(_cacheKeyGenerator.GenerateBookDetailsKey(id));
     }
@@ -120,6 +147,7 @@ public sealed class BookService : IBookService
         
         return await _cache.GetOrSetAsync(cacheKey, async () => await _bookRepository.GetBookDetails(id), TimeSpan.FromMinutes(30));
     }
+
     
     /// <summary>
     /// Добавление деталей для книги
@@ -127,16 +155,15 @@ public sealed class BookService : IBookService
     /// <param name="id">Индификатор</param>
     /// <param name="description">Описание</param>
     /// <param name="file">Обложка</param>
+    /// <param name="extension">Тип изображения</param>
     /// <exception cref="BookServiceException">В случае если книга заархивирована</exception>
-    public async Task AddDetails(Guid id, string description, byte[] file)
+    public async Task AddDetails(Guid id, string description, byte[] file, string extension)
     {
         Book book = await _bookRepository.GetBookById(id);
     
         if(book.IsArchived)
             throw new BookServiceException("Книга архивирована!");
 
-        ValidateImageFile(file);
-        string extension = GetFileExtension(file);
         string fileName = $"book-covers/{book.Year}/{id}{extension}";
     
         using var stream = new MemoryStream(file);
@@ -183,35 +210,6 @@ public sealed class BookService : IBookService
             throw new BookServiceException("Категория книги должна быть указана");
     }
 
-    private void ValidateImageFile(byte[] file)
-    {
-        const int maxFileSize = 5 * 1024 * 1024;
-        
-        if (file.Length > maxFileSize)
-            throw new BookServiceException($"Размер файла не должен превышать 5MB");
-        
-        var extension = GetFileExtension(file);
-        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
-        
-        if (!allowedExtensions.Contains(extension))
-            throw new BookServiceException(
-                $"Недопустимый формат изображения. Разрешены: {string.Join(", ", allowedExtensions)}");
-    }
-
-    private string GetFileExtension(byte[] file)
-    {
-        if (file.Length < 2) return ".jpg";
-    
-        if (file[0] == 0xFF && file[1] == 0xD8) return ".jpg";
-        
-        if (file.Length >= 4 && file[0] == 0x89 && file[1] == 0x50 && 
-            file[2] == 0x4E && file[3] == 0x47) return ".png";
-        
-        if (file.Length >= 4 && file[0] == 0x52 && file[1] == 0x49 && 
-            file[2] == 0x46 && file[3] == 0x46) return ".webp";
-    
-        return ".jpg";
-    }
 
     /// <summary>
     /// Инвалидация кеша списка книг

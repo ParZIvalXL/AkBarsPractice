@@ -18,6 +18,8 @@ namespace PracticalWork.Library.Abstractions.Services
         public string ReaderDetailsPrefix => "reader:details";
         public string ReadersListPrefix => "readers:list";
         public string ReaderBooksPrefix => "reader:books";
+        public string ReportsListPrefix => "reports:list";
+        public string ReportsListKey => "reports:list:all";
         
         /// <summary>
         /// Генерация хэша MD5 для фильтров

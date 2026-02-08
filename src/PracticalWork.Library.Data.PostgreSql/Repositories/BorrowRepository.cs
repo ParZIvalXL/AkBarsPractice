@@ -73,6 +73,9 @@ public class BorrowRepository : IBorrowRepository
     
     private Task<BookBorrowEntity> GetBorrowForBook(Guid bookId)
     {
-        return _appDbContext.BookBorrows.FirstOrDefaultAsync(x => x.BookId == bookId || x.Status == BookIssueStatus.Issued);
+        return _appDbContext.BookBorrows
+            .FirstOrDefaultAsync(x =>
+                x.BookId == bookId &&
+                x.Status == BookIssueStatus.Issued);
     }
 }

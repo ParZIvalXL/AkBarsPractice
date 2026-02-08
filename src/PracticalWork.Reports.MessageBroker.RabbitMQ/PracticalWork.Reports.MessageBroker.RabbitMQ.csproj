@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>ClassLibrary1</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="RabbitMQ.Client" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\utils\PracticalWork.Library.Data.PostgreSql.Migrator\PracticalWork.Library.Data.PostgreSql.Migrator.csproj" />
+      <ProjectReference Include="..\PracticalWork.Library.Contracts\PracticalWork.Library.Contracts.csproj" />
+      <ProjectReference Include="..\PracticalWork.Reports.Data.PostgreSql\PracticalWork.Reports.Data.PostgreSql.csproj" />
+      <ProjectReference Include="..\PracticalWork.Reports.Domain\PracticalWork.Reports.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

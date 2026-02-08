@@ -20,6 +20,7 @@ public class Program
         try
         {
             Configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
@@ -49,8 +50,15 @@ public class Program
                 builder.AddConfiguration(Configuration.GetSection("Logging"));
                 builder.ClearProviders();
             })
-            .AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration["App:DbConnectionString"],
-                sqlServerOptions => sqlServerOptions.CommandTimeout(Configuration.GetValue<int>("App:MigrationTimeoutInSeconds"))))
+            .AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(
+                    Configuration.GetConnectionString("DefaultConnection"),
+                    npgsqlOptions =>
+                        npgsqlOptions.CommandTimeout(
+                            Configuration.GetValue<int>("App:MigrationTimeoutInSeconds")
+                        )
+                )
+            )
             .BuildServiceProvider(false);
     }
 

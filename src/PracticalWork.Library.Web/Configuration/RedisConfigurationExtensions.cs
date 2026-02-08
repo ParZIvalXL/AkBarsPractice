@@ -9,7 +9,6 @@ namespace PracticalWork.Library.Web.Configuration
     {
         public static IServiceCollection AddRedisCache(this IServiceCollection services, IConfiguration configuration)
         {
-            // Получаем строку подключения из конфигурации
             var redisSection = configuration.GetSection("Redis");
             var connectionString = redisSection["ConnectionString"];
             
@@ -18,14 +17,12 @@ namespace PracticalWork.Library.Web.Configuration
                 throw new InvalidOperationException("Redis connection string is not configured. Please add 'Redis:ConnectionString' to appsettings.json");
             }
 
-            // Регистрация распределенного кэша
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = connectionString;
                 options.InstanceName = redisSection["InstanceName"] ?? "LibraryCache";
             });
 
-            // Регистрация ConnectionMultiplexer как Singleton
             services.AddSingleton<IConnectionMultiplexer>(sp =>
             {
                 var config = ConfigurationOptions.Parse(connectionString, true);

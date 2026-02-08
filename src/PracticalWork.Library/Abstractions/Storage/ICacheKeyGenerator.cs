@@ -28,6 +28,10 @@ namespace PracticalWork.Library.Abstractions.Storage
         string ReadersListPrefix { get; }
         string ReaderBooksPrefix { get; }
         
+        // Префиксы для отчетов
+        string ReportsListPrefix { get; }
+        string ReportsListKey { get; }
+        
         // Вспомогательные методы
         string GenerateFilterHash(BookCategory? category = null, [CanBeNull] string author = null, 
             BookStatus? status = null, [CanBeNull] string name = null, bool? isAvailable = null);

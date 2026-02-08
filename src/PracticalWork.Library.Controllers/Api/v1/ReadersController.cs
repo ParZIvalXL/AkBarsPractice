@@ -9,7 +9,7 @@ using PracticalWork.Library.Models;
 namespace PracticalWork.Library.Controllers.Api.v1;
 
 [ApiController]
-[ApiVersion("1")]
+[ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/readers")]
 public class ReadersController : ControllerBase
 {
